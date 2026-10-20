@@ -132,7 +132,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .st-completed,.st-disregarded{background:var(--chip-neutral);color:var(--muted);}
 .st-rejected,.st-lost,.st-cancelled{background:var(--chip-bad);color:var(--bad);}
 .conf{background:var(--chip-bad);color:var(--bad);border-radius:99px;padding:2px 10px;font-size:11px;font-weight:700;}
-.req-body{border-top:1px dashed var(--line);margin-top:10px;padding-top:10px;font-size:13.5px;}
+.req-body{border-top:1px dashed var(--line);margin-top:10px;padding-top:10px;font-size:13.5px;overflow-x:auto;}
 .kv{display:grid;grid-template-columns:minmax(120px,180px) 1fr;gap:3px 14px;margin:0;}
 .kv dt{color:var(--muted);}
 .kv dd{margin:0;overflow-wrap:anywhere;}
@@ -160,6 +160,13 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .org .node b{display:block;}
 .org .node span{font-size:12px;color:var(--muted);}
 .signin{max-width:420px;margin:60px auto;}
+.dbbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:-8px 0 16px;}
+.dbbar .dbcap{font:700 10px "Aptos","Segoe UI Variable","Segoe UI",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 4px 0 2px;}
+.dbbar .dbcap:not(:first-child){margin-left:12px;}
+.dbbar button,.dbbar a.extdb{appearance:none;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font:600 12.5px "Aptos","Segoe UI Variable","Segoe UI",system-ui,sans-serif;color:var(--muted);cursor:pointer;text-decoration:none;white-space:nowrap;}
+.dbbar button:hover,.dbbar a.extdb:hover{border-color:var(--accent);color:var(--ink);}
+.dbbar button[aria-selected="true"]{background:var(--tabsel-bg);border-color:var(--tabsel-bg);color:var(--tabsel-ink);}
+.dbbar a.extdb .ext{opacity:.6;font-size:11px;}
 .layout{display:flex;gap:22px;align-items:flex-start;}
 .side{flex:0 0 190px;position:sticky;top:16px;background:var(--sidebg);border:1px solid var(--sidebg);border-radius:12px;padding:14px 12px;display:flex;flex-direction:column;gap:3px;}
 .side h4{margin:10px 8px 6px;font:700 10px "Aptos","Segoe UI Variable","Segoe UI",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--sidecap);}
@@ -211,7 +218,36 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 .cycle li:last-child::after{display:none;}
 .cycle .chip{display:inline-block;margin-top:4px;}
 @media (max-width:900px){.formwrap{flex-direction:column;}.cycle{position:static;flex:none;width:100%;}}
-@media (max-width:760px){.layout{flex-direction:column;}.side{position:static;width:100%;flex-direction:row;flex-wrap:wrap;gap:4px;}.side h4{width:100%;margin:4px 6px;}}
+@media (max-width:760px){
+  body{padding:0 10px 40px;}
+  .hero{margin:0 -10px 16px;border-radius:0;padding:2px 14px 14px;}
+  header.top{padding:14px 0 2px;}
+  h1{font-size:21px;}
+  .brand .logochip{width:42px;height:42px;}
+  .brand .logochip img{width:32px;height:32px;}
+  .whoami{margin-left:0;width:100%;gap:6px;font-size:12px;}
+  .whoami .rolebadge{font-size:10.5px;padding:2px 8px;}
+  .whoami .btn.small{padding:4px 9px;font-size:11.5px;}
+  nav.tabs{gap:6px;margin-bottom:14px;}
+  nav.tabs button{padding:7px 12px;font-size:12.5px;flex:1 1 auto;text-align:center;}
+  .layout{flex-direction:column;gap:14px;align-items:stretch;}
+  .main{width:100%;max-width:100%;min-width:0;overflow:hidden;}
+  .side{position:static;width:100%;flex-direction:row;flex-wrap:wrap;gap:5px;padding:10px 12px 12px;}
+  .side h4{width:100%;margin:10px 2px 3px;padding-top:10px;border-top:1px solid rgba(255,255,255,.14);}
+  .side h4:first-child{margin-top:0;padding-top:0;border-top:none;}
+  .side button,.side a.extdb{flex:0 1 auto;padding:7px 12px;font-size:12.5px;background:var(--sidehover);border-radius:99px;}
+  .side button[aria-selected="true"]{background:var(--cta);color:var(--cta-ink);}
+  .panel{padding:14px;}
+  .module{padding:13px 14px 15px;}
+  .kv{grid-template-columns:1fr;gap:0;}
+  .kv dt{margin-top:8px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;}
+  .kv dt:first-child{margin-top:0;}
+  .cycrow{flex-direction:column;align-items:stretch;gap:6px;}
+  .cycrow select{width:100%;max-width:none;}
+  .filters select,.filters input{flex:1 1 140px;}
+  .signin{margin:24px auto;}
+  .dbbar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin:-6px 0 12px;-webkit-overflow-scrolling:touch;}
+}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -221,7 +257,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
   <header class="top">
     <div class="brand"><span class="logochip"><img src="data:image/png;base64,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" alt="EcoConsult logo"></span>
     <h1><span class="eyebrow">ECO CONSULT</span><span class="eco">Workflow</span> Portal</h1></div>
-    <div class="whoami"><button class="btn small" id="punchbtn" hidden>⏱</button><span id="who"></span><span class="rolebadge" id="role" hidden>Finance &amp; Operations</span>
+    <div class="whoami"><span id="who"></span><span class="rolebadge" id="role" hidden>Finance &amp; Operations</span><button class="btn small" id="punchbtn" hidden>⏱</button>
       <button class="btn small" id="signout" hidden>Sign out</button></div>
   </header>
   <p class="sub"><b>Every work cycle ECO runs — in one place.</b></p>
@@ -269,22 +305,25 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
 
   <div id="app" hidden>
 
+  <nav class="dbbar" id="dbbar" aria-label="Databases and library">
+    <span class="dbcap">Databases</span>
+    <button data-view="projects">Projects</button>
+    <a class="extdb" href="https://ecoconsjo.sharepoint.com/sites/ECOConsultTeam/Database/Forms/AllItems.aspx?id=%2Fsites%2FECOConsultTeam%2FDatabase%2FProposals%20Database%20and%20Forms&viewid=6a8ffebd%2D5397%2D4a54%2Dae43%2D50c690a9f01d" target="_blank" rel="noopener">Proposals <span class="ext">↗</span></a>
+    <button data-view="contacts">Contacts</button>
+    <button data-view="cvs">CVs</button>
+    <span class="dbcap">Library</span>
+    <button data-view="policies">Policies &amp; procedures</button>
+    <button data-view="library">Official papers &amp; certificates</button>
+  </nav>
 
   <div class="layout">
   <aside class="side" id="sidenav">
-    <h4>Databases</h4>
-    <button data-view="projects">Projects</button>
-    <a class="extdb" href="https://ecoconsjo.sharepoint.com/sites/ECOConsultTeam/Database/Forms/AllItems.aspx?id=%2Fsites%2FECOConsultTeam%2FDatabase%2FProposals%20Database%20and%20Forms&viewid=6a8ffebd%2D5397%2D4a54%2Dae43%2D50c690a9f01d" target="_blank" rel="noopener" title="Opens the Proposals database on the ECO SharePoint site">Proposals <span class="ext">↗</span></a>
-    <a class="extdb" href="https://ecoconsjo.sharepoint.com/sites/ECOConsultTeam/Database/Projects%20Database%20and%20Forms/ECO%20Projects%20and%20Contacts%20Database.xlsm" target="_blank" rel="noopener" title="Opens the ECO Projects &amp; Contacts workbook on SharePoint">Contacts <span class="ext">↗</span></a>
-    <a class="extdb" href="https://ecoconsjo.sharepoint.com/sites/ECOConsultTeam/Database/Forms/AllItems.aspx?id=%2Fsites%2FECOConsultTeam%2FDatabase%2FCVs" target="_blank" rel="noopener" title="Opens the CVs folder &amp; index on the ECO SharePoint site">CVs <span class="ext">↗</span></a>
     <h4>Company</h4>
     <button data-view="calendar">Calendar</button>
     <button data-view="myhr">My HR</button>
-    <button data-view="interns">Interns</button>
     <button data-view="staff">Staff</button>
+    <button data-view="interns">Interns</button>
     <button data-view="help">Help me</button>
-    <button data-view="policies">Policies &amp; procedures</button>
-    <button data-view="library">Official papers &amp; certificates</button>
     <button data-view="settings" id="tab-settings" hidden>Settings</button>
   </aside>
   <div class="main">
@@ -337,6 +376,26 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
     </div>
   </section>
 
+
+  <section id="view-contacts" hidden>
+    <div class="sp"><a class="btn small" target="_blank" rel="noopener" href="https://ecoconsjo.sharepoint.com/sites/ECOConsultTeam/Database/Projects%20Database%20and%20Forms/ECO%20Projects%20and%20Contacts%20Database.xlsm">SharePoint master workbook ↗</a></div>
+    <div class="panel"><h3>Add a contact</h3>
+      <p class="meta">Anyone can add a contact — clients, donors, partners, consultants, suppliers. Keep it professional and current.</p>
+      <div class="fields" id="ct-form"></div>
+      <div class="formfoot"><button class="btn primary" id="ct-add">Add contact</button><span class="err" id="ct-err" hidden></span><span class="okmsg" id="ct-ok" hidden>Added.</span></div></div>
+    <div class="filters"><input id="ct-q" placeholder="Search contacts…"><button class="btn small" id="ct-dl">Export to Excel (CSV)</button></div>
+    <div class="tbl" id="ct-list"></div>
+  </section>
+
+  <section id="view-cvs" hidden>
+    <div class="sp"><a class="btn small" target="_blank" rel="noopener" href="https://ecoconsjo.sharepoint.com/sites/ECOConsultTeam/Database/Forms/AllItems.aspx?id=%2Fsites%2FECOConsultTeam%2FDatabase%2FCVs">SharePoint CVs folder ↗</a></div>
+    <div class="panel"><h3>Add a CV</h3>
+      <p class="meta">Add experts and consultants ECO may draw on — attach the CV file so it opens straight from here.</p>
+      <div class="fields" id="cv-form"></div>
+      <div class="formfoot"><button class="btn primary" id="cv-add">Add CV</button><span class="err" id="cv-err" hidden></span><span class="okmsg" id="cv-ok" hidden>Added.</span></div></div>
+    <div class="filters"><input id="cv-q" placeholder="Search CVs — name, specialty, country, language…"><button class="btn small" id="cv-dl">Export to Excel (CSV)</button></div>
+    <div class="tbl" id="cv-list"></div>
+  </section>
 
   <section id="view-myhr" hidden>
     <div id="probnote"></div>
@@ -722,7 +781,7 @@ const FORMS={
   procurement:{prefix:"PR",title:"Procurement request",custom:"proc",
     route:"Line manager → <b>procurement</b>. The method follows the Procurement Procedure thresholds: up to 350 JOD micro purchase, over 350 to 50,000 competitive (3 offers), over 50,000 tender (public announcement & Tender Committee).",
     hint:"Payment rule: below 100 JOD cash permitted; 100–350 JOD by cheque or bank transfer. Above 350 JOD third-party due diligence is required before award. Procurement obtains the offers — you don't need quotes to submit."},
-  newproject:{prefix:"ECO",title:"New project — opening form",direct:1,
+  newproject:{prefix:"ECO",title:"New project — opening form",direct:1,only:["tala.zakaria","maysoon.salem"],
     route:"Direct to <b>Finance & Operations</b>: the project is verified, registered with its ECO code, and folders & trackers are opened.",
     fields:[{k:"projectName",l:"Project name",req:1},{k:"client",l:"Contracting entity (client)",req:1},
       {k:"donor",l:"Donor / financing institution"},
@@ -827,6 +886,18 @@ const FORMS={
       {k:"contact",l:"Client contact person",req:1},{k:"email",l:"Contact email",t:"email"},{k:"phone",l:"Contact phone"},
       {k:"language",l:"Survey language",t:"select",opts:["English","Arabic","Bilingual Arabic/English"]},
       {k:"notes",l:"Notes",t:"textarea",full:1}]},
+  correspondence:{prefix:"COR",title:"Outgoing correspondence — serial number",direct:1,
+    route:"Direct to <b>Maryam Haddad</b> — she records the letter in the correspondence log and issues its ECO serial number.",
+    fields:[
+      {k:"guide",t:"info",full:1,text:"<b>Serial number guidelines.</b> Every outgoing letter must carry an ECO serial number issued by Maryam before it leaves the company. The serial has four sections, separated by slashes: <b>Project or proposal code</b> / <b>year (yyyy)</b> / <b>general serial number</b> (the running number across all ECO correspondence that year) / <b>related project or proposal serial number</b> (the letter's own running number within that project or proposal). Submit this request with the letter attached; Maryam records it, issues the next serial in line, and the number appears on this request. Write the serial on the letter before sending."},
+      {k:"purpose",l:"Related to",t:"select",opts:["Project","Proposal","General"]},
+      {k:"project",l:"Project",t:"projectsel",only:"ongoing",showIf:{k:"purpose",v:["Project"]}},
+      {k:"proposalCode",l:"Proposal code",showIf:{k:"purpose",v:["Proposal"]}},
+      {k:"recipient",l:"Addressed to (entity / person)",req:1},
+      {k:"subject",l:"Subject of the letter",req:1},
+      {k:"letterDate",l:"Letter date",t:"date",req:1},
+      {k:"relatedSerial",l:"Previous related serial (if this is a follow-up letter)"},
+      {k:"file",l:"Attach the letter",t:"file"}]},
   refletter:{prefix:"RefLetter",title:"Completion / reference letter",direct:1,
     route:"Direct to <b>Administration</b>: the completion or reference letter is requested from the client and filed for future tenders.",
     fields:[{k:"project",l:"Project",t:"projectsel",req:1},{k:"client",l:"Client",req:1},{k:"contact",l:"Client contact person"},
@@ -836,7 +907,7 @@ const FORMS={
       {k:"notes",l:"Notes",t:"textarea",full:1}]},
 };
 const GROUPS=[
-  ["Events & logistics",["evt_org","evt_att","evt_del","transport"]],
+  ["Events & logistics",["evt_org","evt_att","evt_del","transport","correspondence"]],
   ["Procurement — third parties & agreements",["procurement","duediligence","agreement"]],
   ["Project cycle",["newproject","tracker","invoicerequest","payment","riskreport","clientsurvey","refletter"]],
   ["Everyday — internal requests",["stationery","kitchen","meetingroom","itissue","maintenance","bizcards"]],
@@ -877,7 +948,7 @@ const CYCLES={
 };
 
 /* ====== STATE ====== */
-let me=null, people=[], approles=[], rqfiles=[], tpinv=[], tpsubs=[], cfg={}, attlog=[], eprofiles=[], handlers={}, register=[], rows=[], events={}, projects=[];
+let me=null, people=[], approles=[], rqfiles=[], tpinv=[], tpsubs=[], cfg={}, attlog=[], eprofiles=[], handlers={}, register=[], rows=[], events={}, projects=[], ctts=[], cvlist=[];
 let pcons=[], pmils=[], pteam=[], pfiles=[], ploe=[], pexp=[], pdel=[], libdocs=[], poldocs=[], calitems=[], hrdocs=[], interns=[], idocs=[]; let curProj=null, curIntern=null; let calMonth=new Date();
 let currentForm=null; const openRows=new Set();
 const personOf=id=>people.find(p=>p.id===id)||null;
@@ -1044,7 +1115,7 @@ if(TP_TOKEN)tpStart();else supa.auth.getSession().then(({data})=>boot(data.sessi
 
 /* ====== DATA ====== */
 async function loadAll(){
-  const [h,ar,rf,ti,ts,cf,ep,att,r,q,ev,pj,pc,pm,tm,fl,lo,xp,dl,lb,pl,ci,hd,itn,idc]=await Promise.all([
+  const [h,ar,rf,ti,ts,cf,ep,att,r,q,ev,pj,pc,pm,tm,fl,lo,xp,dl,lb,pl,ci,hd,itn,idc,ctq,cvq]=await Promise.all([
     supa.from("handlers").select("*"),
     supa.from("app_roles").select("*"),
     supa.from("request_files").select("*").order("created_at"),
@@ -1070,6 +1141,8 @@ async function loadAll(){
     supa.from("hr_docs").select("*").order("created_at",{ascending:false}),
     supa.from("interns").select("*").order("created_at",{ascending:false}),
     supa.from("intern_docs").select("*").order("created_at",{ascending:false}),
+    supa.from("contacts").select("*").order("name"),
+    supa.from("cvs").select("*").order("person_name"),
   ]);
   handlers={}; (h.data||[]).forEach(x=>handlers[x.form_type]=x.person_id);
   approles=ar.data||[];
@@ -1078,6 +1151,7 @@ async function loadAll(){
   cfg={};(cf.data||[]).forEach(x=>cfg[x.key]=x.value);
   eprofiles=ep.data||[];
   attlog=att.data||[];
+  ctts=ctq.data||[];cvlist=cvq.data||[];
   renderPunch();
   register=r.data||[]; rows=q.data||[];
   events={}; (ev.data||[]).forEach(e=>{(events[e.request_id]=events[e.request_id]||[]).push(e);});
@@ -1089,13 +1163,18 @@ async function loadAll(){
 }
 
 /* ====== TABS & SIDE MENU ====== */
+let lastLoad=Date.now();
 function switchView(b){
-  document.querySelectorAll("#tabs [data-view],#sidenav [data-view]").forEach(x=>{
+  document.querySelectorAll("#tabs [data-view],#sidenav [data-view],#dbbar [data-view]").forEach(x=>{
     x.setAttribute("aria-selected",x===b?"true":"false");
     const v=document.getElementById("view-"+x.dataset.view); if(v)v.hidden=x!==b;
   });
+  if(me&&Date.now()-lastLoad>30000){lastLoad=Date.now();loadAll();}
 }
-["tabs","sidenav"].forEach(id=>$(id).addEventListener("click",e=>{
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden&&me&&Date.now()-lastLoad>60000){lastLoad=Date.now();loadAll();}
+});
+["tabs","sidenav","dbbar"].forEach(id=>$(id).addEventListener("click",e=>{
   const b=e.target.closest("[data-view]"); if(b)switchView(b);
 }));
 $("lib-dl").addEventListener("click",()=>{
@@ -1119,7 +1198,7 @@ $("cal-next").addEventListener("click",()=>{calMonth=new Date(calMonth.getFullYe
 function renderChooser(){
   $("chooser").innerHTML=GROUPS.map(([label,keys])=>
     `<section class="module"><h2>${esc(label)}</h2><div class="cards">`+
-    keys.map(k=>{const f=FORMS[k];
+    keys.filter(k=>{const f=FORMS[k];return !f.only||!me||f.only.includes(me.id)||isOps();}).map(k=>{const f=FORMS[k];
       return `<button type="button" class="card" data-form="${k}"><h3>${esc(f.title)}<span class="infodot" aria-hidden="true">i</span></h3><span class="tip">${f.route}</span></button>`;}).join("")+
     `</div></section>`).join("");
   $("chooser").querySelectorAll(".card").forEach(b=>b.addEventListener("click",()=>{
@@ -1128,7 +1207,7 @@ function renderChooser(){
     openForm(b.dataset.form);
   }));
   const ft=$("f-type"); ft.length=1;
-  Object.entries(FORMS).forEach(([k,f])=>{if(f.view)return;const o=document.createElement("option");o.value=k;o.textContent=f.title;ft.appendChild(o);});
+  Object.entries(FORMS).forEach(([k,f])=>{if(f.view)return;if(f.only&&me&&!f.only.includes(me.id)&&!isOps())return;const o=document.createElement("option");o.value=k;o.textContent=f.title;ft.appendChild(o);});
 }
 function fieldHtml(f){
   const id="fld-"+f.k, req=f.req?"required":"";
@@ -1140,6 +1219,8 @@ function fieldHtml(f){
       <option value="__other__">Not on the register</option></select>`;
   else if(f.t==="projectsel")
     inp=`<select id="${id}" ${req}><option value=""></option>${projects.filter(p=>f.only!=="ongoing"||p.status==="ongoing").map(p=>`<option value="${esc((p.code?p.code+" — ":"")+p.name)}">${esc((p.code?p.code+" — ":"")+p.name)}</option>`).join("")}</select>`;
+  else if(f.t==="info")
+    return `<div class="notice full" id="wrap-${f.k}" style="grid-column:1/-1;margin-bottom:0">${f.text}</div>`;
   else if(f.t==="file")
     inp=`<input id="${id}" type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg">`;
   else if(f.t==="countrysel")
@@ -1977,6 +2058,7 @@ function printRequest(id){
   w.document.close();
 }
 function extraDetail(r){
+  const ser=(r.type==="correspondence"&&r.fields&&r.fields.serial)?`<p class="meta" style="margin:8px 0 0"><b>Issued serial number: </b><b style="color:var(--cta)">${esc(r.fields.serial)}</b></p>`:"";
   const mine=(rqfiles||[]).filter(x=>x.request_id===r.id).map(x=>({path:x.path,label:x.label||"File",name:x.name}));
   (tpinv||[]).filter(x=>x.request_id===r.id).forEach(x=>{
     const sub=(tpsubs||[]).find(ss=>ss.token===x.token);
@@ -2001,7 +2083,7 @@ function extraDetail(r){
       <button type="button" class="btn small" data-tplink="${r.id}">Generate a link for the third party</button>
       <span class="mailnote">Send the link to the third party — they fill their company details and upload their documents themselves (valid 14 days, single use).</span></div>`;
   }
-  return tp+`<div style="margin-top:10px"><b style="font-size:12px">Files on this request</b>
+  return ser+tp+`<div style="margin-top:10px"><b style="font-size:12px">Files on this request</b>
     <div>${lst||'<span class="mailnote">No files attached yet.</span>'}</div>${up}</div>
     <div style="margin-top:8px"><button type="button" class="btn small" data-pdf="${r.id}">⬇ Export PDF</button></div>`;
 }
@@ -2052,7 +2134,9 @@ function actionBtns(r,mode){
   if(!btns)return "";
   const npIn=(mode==="ops"&&r.type==="newproject"&&(r.status==="submitted"||r.status==="in_review"))
     ?`<input id="npcode-${r.id}" placeholder="ECO code (empty = next in line)" style="max-width:220px">`:"";
-  return `<div class="actions">${btns}${npIn}<input id="note-${r.id}" placeholder="Note (optional — required to reject)" maxlength="300"></div>`;
+  const corIn=(mode==="ops"&&r.type==="correspondence"&&r.status!=="completed"&&r.status!=="rejected")
+    ?`<input id="corser-${r.id}" placeholder="Serial — code/yyyy/gen no./related no." style="max-width:260px" value="${esc((r.fields||{}).serial||"")}">`:"";
+  return `<div class="actions">${btns}${npIn}${corIn}<input id="note-${r.id}" placeholder="Note (optional — required to reject)" maxlength="300"></div>`;
 }
 function rowHtml(r,mode){
   const f=FORMS[r.type]||{title:r.type};
@@ -2349,6 +2433,8 @@ document.addEventListener("change",async e=>{
     await supa.from("project_loe").update({months:mo}).eq("id",id);await loadAll();return;}
   const pdp=e.target.closest("[data-pdept]");
   if(pdp){await supa.from("projects").update({department:pdp.value||null}).eq("id",pdp.dataset.pdept);await loadAll();return;}
+  const pst=e.target.closest("[data-pstat]");
+  if(pst){await supa.from("projects").update({status:pst.value}).eq("id",pst.dataset.pstat);await loadAll();return;}
   const ist=e.target.closest("[data-instat]");
   if(ist){await supa.from("interns").update({status:ist.value}).eq("id",ist.dataset.instat);await loadAll();return;}
   const df=e.target.closest("[data-dfu]");
@@ -2399,6 +2485,10 @@ async function doAction(id,act){
   }
   const newStatus=patch.status||r.status;
   try{
+    if(r.type==="correspondence"&&isOps()){
+      const si=$("corser-"+id);
+      if(si&&si.value.trim())patch.fields={...(r.fields||{}),serial:si.value.trim()};
+    }
     if(r.type==="newproject"&&newStatus==="approved"&&isOps()){
       const fd=r.fields||{};
       let code=($("npcode-"+id)?$("npcode-"+id).value.trim():"");
@@ -2444,6 +2534,10 @@ const inp=(id,l,t="text",full)=>`<label class="f ${full?"full":""}">${l}<input i
 const selp=(id,l,opts)=>`<label class="f">${l}<select id="${id}">${opts.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join("")}</select></label>`;
 const pplOpts=()=>people.filter(isActive).map(p=>[p.id,p.name]);
 function renderDbForms(){
+  const addPanel=$("proj-form").closest(".panel");
+  const canAdd=me&&(isOps()||me.id==="tala.zakaria"||me.id==="maysoon.salem");
+  if(addPanel)addPanel.hidden=!canAdd;
+  if(!canAdd){return;}
   $("proj-form").innerHTML=inp("pj-code","Project code (empty = next in line, e.g. 26-48)")+inp("pj-name","Project name *")+inp("pj-client","Client")
     +selp("pj-dept","Department",[["E&S Advisory and Assessments","E&S Advisory and Assessments"],["Economic Growth & Climate","Economic Growth & Climate"],["ESG & Corporate Sustainability","ESG & Corporate Sustainability"],["Institutional Sustainability","Institutional Sustainability"],["Management","Management"]])
     +selp("pj-pm","Project manager",pplOpts())+inp("pj-start","Start date","date")+inp("pj-end","End date","date")
@@ -2471,6 +2565,61 @@ $("proj-add").addEventListener("click",async()=>{
     description:$("pj-desc").value.trim()||null,created_by:me.id});
   if(error){err.textContent=error.message;err.hidden=false;return;}
   $("pj-name").value="";await loadAll();
+});
+$("ct-add").addEventListener("click",async()=>{
+  const err=$("ct-err");err.hidden=true;$("ct-ok").hidden=true;
+  const name=$("ct-name").value.trim();
+  if(!name){err.textContent="Name is required.";err.hidden=false;return;}
+  const {error}=await supa.from("contacts").insert({name,organization:$("ct-org").value.trim()||null,
+    position:$("ct-pos").value.trim()||null,type:$("ct-type").value||null,country:$("ct-country").value||null,
+    email:$("ct-email").value.trim()||null,phone:$("ct-phone").value.trim()||null,
+    notes:$("ct-notes").value.trim()||null,created_by:me.id});
+  if(error){err.textContent=error.message;err.hidden=false;return;}
+  ["ct-name","ct-org","ct-pos","ct-email","ct-phone","ct-notes"].forEach(i=>$(i).value="");
+  $("ct-ok").hidden=false;setTimeout(()=>$("ct-ok").hidden=true,2000);
+  await loadAll();
+});
+$("cv-add").addEventListener("click",async()=>{
+  const err=$("cv-err");err.hidden=true;$("cv-ok").hidden=true;
+  const name=$("cvv-name").value.trim();
+  if(!name){err.textContent="Person name is required.";err.hidden=false;return;}
+  let path=null;
+  const f=$("cvv-file").files[0];
+  if(f){
+    if(f.size>15*1024*1024){err.textContent="CV file is too big (max 15 MB).";err.hidden=false;return;}
+    path="cvs/"+Date.now()+"-"+f.name.replace(/[^A-Za-z0-9._-]+/g,"_");
+    const {error:ue}=await supa.storage.from("attachments").upload(path,f);
+    if(ue){err.textContent="Upload failed: "+ue.message;err.hidden=false;return;}
+  }
+  const yrs=$("cvv-years").value;
+  const {error}=await supa.from("cvs").insert({person_name:name,email:$("cvv-email").value.trim()||null,
+    specialty:$("cvv-spec").value.trim()||null,nationality:$("cvv-nat").value||null,
+    languages:$("cvv-lang").value.trim()||null,years_experience:yrs===""?null:+yrs,
+    education:$("cvv-edu").value.trim()||null,summary:$("cvv-sum").value.trim()||null,
+    file_url:path,created_by:me.id});
+  if(error){err.textContent=error.message;err.hidden=false;return;}
+  ["cvv-name","cvv-email","cvv-spec","cvv-lang","cvv-years","cvv-edu","cvv-sum"].forEach(i=>$(i).value="");
+  $("cvv-file").value="";
+  $("cv-ok").hidden=false;setTimeout(()=>$("cv-ok").hidden=true,2000);
+  await loadAll();
+});
+$("ct-q").addEventListener("input",renderContacts);
+$("cv-q").addEventListener("input",renderCvs);
+$("ct-dl").addEventListener("click",()=>{
+  dlCsv("ECO-Contacts.csv",[["Name","Organization","Position","Type","Country","Email","Phone","Notes","Added by","Added on"],
+    ...ctts.map(c=>[c.name,c.organization,c.position,c.type,c.country,c.email,c.phone,c.notes,(personOf(c.created_by)||{}).name||"",String(c.created_at||"").slice(0,10)])]);
+});
+$("cv-dl").addEventListener("click",()=>{
+  dlCsv("ECO-CVs.csv",[["Name","Email","Specialty","Nationality","Languages","Years of experience","Education","Summary","Added by","Added on"],
+    ...cvlist.map(c=>[c.person_name,c.email,c.specialty,c.nationality,c.languages,c.years_experience,c.education,c.summary,(personOf(c.created_by)||{}).name||"",String(c.created_at||"").slice(0,10)])]);
+});
+document.addEventListener("click",async e=>{
+  const cd=e.target.closest("[data-ctdel]");
+  if(cd){if(!confirm("Remove this contact?"))return;
+    await supa.from("contacts").delete().eq("id",cd.dataset.ctdel);await loadAll();return;}
+  const vd=e.target.closest("[data-cvdel]");
+  if(vd){if(!confirm("Remove this CV entry?"))return;
+    await supa.from("cvs").delete().eq("id",vd.dataset.cvdel);await loadAll();return;}
 });
 const fmtAmt=n=>n==null||n===""?"—":Number(n).toLocaleString("en-US",{maximumFractionDigits:2});
 const stChip={pending:"pending_manager",invoiced:"in_review",received:"approved",paid:"approved"};
@@ -2639,6 +2788,8 @@ function renderProjPage(){
   const team=pteam.filter(t=>t.project_id===p.id);
   const files=pfiles.filter(f=>f.project_id===p.id);
   const mine=me&&team.some(t=>t.person_id===me.id);
+  const sameDept=me&&p.department&&me.dept===p.department;
+  const canTouch=isOps()||mine||sameDept||(me&&(p.pm_id===me.id||p.created_by===me.id));
   pg.innerHTML=`<div style="margin-bottom:12px"><button type="button" class="btn small" id="projback">← All projects</button></div>
   <div class="panel projhead"><h2 style="margin-top:0">${esc(p.code||"")} — ${esc(p.name)}</h2>
     <div class="finh"><span>Client: <b>${esc(p.client||"—")}</b></span>
@@ -2657,10 +2808,54 @@ function renderProjPage(){
   ${loeHtml(p)}
   <div class="panel"><h3>Project documents</h3>
     ${files.length?`<div>${files.map(f=>`<button type="button" class="btn small" data-file="${esc(f.path)}" style="margin:0 6px 6px 0">${esc(f.label?f.label+" — ":"")}${esc(f.name)}</button>`).join("")}</div>`:`<p class="meta">No documents yet.</p>`}
-    ${(isOps()||mine)?`<div class="actions"><input id="pf-label" placeholder="Label (e.g. Signed contract, Invoicing workbook)" style="flex:1 1 180px">
+    ${canTouch?`<div class="actions"><input id="pf-label" placeholder="Label (e.g. Signed contract, Invoicing workbook)" style="flex:1 1 180px">
       <input id="pf-file" type="file" style="flex:2 1 200px;width:auto;border:none">
       <button type="button" class="btn small" data-pfup="${p.id}">Upload</button><span class="err" id="pf-err" hidden></span></div>`:""}</div>`;
   const bk=$("projback");if(bk)bk.addEventListener("click",()=>{curProj=null;renderProjPage();});
+}
+const CT_TYPES=["Client","Donor","Partner","Subcontractor","Consultant","Supplier","Government","Other"];
+function renderContactsForm(){
+  const h=$("ct-form");if(!h||h.dataset.done)return;h.dataset.done="1";
+  h.innerHTML=inp("ct-name","Name *")+inp("ct-org","Organization")+inp("ct-pos","Position / role")
+    +selp("ct-type","Type",CT_TYPES.map(t=>[t,t]))
+    +selp("ct-country","Country",[["",""],...COUNTRIES.map(c=>[c,c])])
+    +inp("ct-email","Email","email")+inp("ct-phone","Phone")+inp("ct-notes","Notes","text",1);
+}
+function renderContacts(){
+  if(!$("ct-list"))return;
+  renderContactsForm();
+  const q=($("ct-q").value||"").toLowerCase();
+  const fil=ctts.filter(c=>!q||((c.name||"")+" "+(c.organization||"")+" "+(c.position||"")+" "+(c.type||"")+" "+(c.country||"")+" "+(c.email||"")).toLowerCase().includes(q));
+  $("ct-list").innerHTML=fil.length?`<table><thead><tr><th>Name</th><th>Organization</th><th>Position</th><th>Type</th><th>Country</th><th>Email</th><th>Phone</th><th>Added by</th><th></th></tr></thead><tbody>${
+    fil.map(c=>`<tr><td>${esc(c.name)}</td><td>${esc(c.organization||"")}</td><td>${esc(c.position||"")}</td><td>${esc(c.type||"")}</td><td>${esc(c.country||"")}</td><td>${esc(c.email||"")}</td><td>${esc(c.phone||"")}</td><td>${esc((personOf(c.created_by)||{}).name||"")}</td>
+      <td>${(isOps()||(me&&c.created_by===me.id))?`<button type="button" class="btn small danger" data-ctdel="${c.id}">✕</button>`:""}</td></tr>`).join("")}</tbody></table>`
+    :`<p class="meta">No contacts yet — add the first one above.</p>`;
+}
+function renderCvForm(){
+  const h=$("cv-form");if(!h||h.dataset.done)return;h.dataset.done="1";
+  h.innerHTML=inp("cvv-name","Person name *")+inp("cvv-email","Email","email")
+    +inp("cvv-spec","Specialty / expertise")+selp("cvv-nat","Nationality",[["",""],...COUNTRIES.map(c=>[c,c])])
+    +inp("cvv-lang","Languages")+inp("cvv-years","Years of experience","number")
+    +inp("cvv-edu","Education (highest degree)")
+    +`<label class="f full">CV file (PDF or Word)<input id="cvv-file" type="file" accept=".pdf,.doc,.docx"></label>`
+    +inp("cvv-sum","Short summary","text",1);
+}
+function renderCvs(){
+  if(!$("cv-list"))return;
+  renderCvForm();
+  const q=($("cv-q").value||"").toLowerCase();
+  const fil=cvlist.filter(c=>!q||((c.person_name||"")+" "+(c.specialty||"")+" "+(c.nationality||"")+" "+(c.languages||"")+" "+(c.education||"")+" "+(c.summary||"")).toLowerCase().includes(q));
+  $("cv-list").innerHTML=fil.length?`<table><thead><tr><th>Name</th><th>Specialty</th><th>Nationality</th><th>Languages</th><th>Years</th><th>CV</th><th>Added by</th><th></th></tr></thead><tbody>${
+    fil.map(c=>`<tr><td>${esc(c.person_name)}</td><td>${esc(c.specialty||"")}</td><td>${esc(c.nationality||"")}</td><td>${esc(c.languages||"")}</td><td>${esc(c.years_experience==null?"":String(c.years_experience))}</td>
+      <td>${c.file_url?`<button type="button" class="btn small" data-file="${esc(c.file_url)}">Open</button>`:"—"}</td>
+      <td>${esc((personOf(c.created_by)||{}).name||"")}</td>
+      <td>${(isOps()||(me&&c.created_by===me.id))?`<button type="button" class="btn small danger" data-cvdel="${c.id}">✕</button>`:""}</td></tr>`).join("")}</tbody></table>`
+    :`<p class="meta">No CVs yet — add the first one above.</p>`;
+}
+const csvEsc=v=>{v=v==null?"":String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+function dlCsv(name,rows2){
+  const blob=new Blob(["\ufeff"+rows2.map(r2=>r2.map(csvEsc).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
 }
 function renderDb(){
   renderDbForms();
@@ -2671,11 +2866,13 @@ function renderDb(){
     ...(fil.some(p=>!p.department||!DEPTS.includes(p.department))?[["Department not assigned",fil.filter(p=>!p.department||!DEPTS.includes(p.department))]]:[])];
   const prow=p=>`<tr data-pview="${p.id}" style="cursor:pointer"><td>${esc(p.code||"")}</td><td>${esc(p.name)}</td><td>${esc(p.client||"")}</td><td>${esc((personOf(p.pm_id)||{}).name||"")}</td>
       <td>${esc(p.start_date||"")} → ${esc(p.end_date||"")}</td><td>${p.value?esc(p.value)+" "+esc(p.currency||""):""}</td>
-      <td><span class="chip st-${esc(p.status)}">${esc(p.status)}</span></td>
+      <td>${(isOps()||(me&&p.pm_id===me.id))?`<select data-pstat="${p.id}" style="width:auto;padding:2px 4px;font-size:11.5px">${["ongoing","completed","on_hold","cancelled"].map(st=>`<option value="${st}" ${p.status===st?"selected":""}>${st.replace("_"," ")}</option>`).join("")}</select>`:`<span class="chip st-${esc(p.status)}">${esc(p.status)}</span>`}</td>
       ${isOps()?`<td><select data-pdept="${p.id}" style="width:auto;padding:2px 4px;font-size:11.5px"><option value="">— dept —</option>${DEPTS.map(d=>`<option ${p.department===d?"selected":""}>${d}</option>`).join("")}</select></td>`:""}</tr>`;
   $("proj-list").innerHTML=groups.map(([d,rows])=>`<div class="depthead">${esc(d)} · ${rows.length}</div>
     <table><thead><tr><th>Code</th><th>Project</th><th>Client</th><th>PM</th><th>Dates</th><th>Value</th><th>Status</th>${isOps()?"<th>Department</th>":""}</tr></thead><tbody>${rows.map(prow).join("")}</tbody></table>`).join("")
     ||`<p class="meta">No projects match.</p>`;
+  renderContacts();
+  renderCvs();
   renderLib();
   renderPol();
   renderCal();
@@ -2688,7 +2885,9 @@ const PROF_FIELDS=[["birthdate","Birthdate","date"],["personal_email","Personal 
  ["marital","Marital status","select",["","Single","Married","Divorced","Widowed"]],["national_no","National number"],
  ["poc_name","Emergency contact — name"],["poc_phone","Emergency contact — phone"],
  ["edu_bachelor","Bachelor's degree (field, university, year)"],["edu_master","Master's degree (field, university, year)"],
- ["prev_employer","Previous employer"],["prev_position","Position held"],["prev_dates","From – to"],
+ ["prev_employment","Previous employers — one per line: employer · position · from – to","textarea"],
+ ["specialty","Specialty / areas of expertise"],
+ ["certificates","Certificates & professional licenses — one per line: certificate · issuer · year","textarea"],
  ["tax_personal","Personal tax exemption","select",["","Yes","No"]],["tax_household","Household (family) tax exemption","select",["","Yes","No"]],
  ["bank_acct_name","Bank — name on account"],["bank_name","Bank name"],["iban","IBAN"],
  ["dependents","Dependents — one per line: name · relation · birthdate","textarea"]];
@@ -2879,18 +3078,24 @@ function renderStaff(){
        const today=new Date().toISOString().slice(0,10);
        const todays=(attlog||[]).filter(x=>String(x.at).slice(0,10)===today);
        const t=x=>new Date(x.at).toTimeString().slice(0,5);
-       host.innerHTML=`<table><thead><tr><th>Name</th><th>In</th><th>Out</th><th>Distance</th></tr></thead><tbody>${
+       host.innerHTML=`<div class="sp" style="justify-content:flex-start;margin-bottom:6px"><button type="button" class="btn small" id="att-dl">Export attendance to Excel (CSV)</button></div><table><thead><tr><th>Name</th><th>In</th><th>Out</th><th>Distance</th></tr></thead><tbody>${
          act.map(p=>{const xs=todays.filter(x=>x.person_id===p.id);
            if(!xs.length)return "";
            const ins=xs.filter(x=>x.kind==="in"),outs=xs.filter(x=>x.kind==="out");
            return `<tr><td>${esc(p.name)}</td><td>${ins.length?t(ins[ins.length-1]):"—"}</td><td>${outs.length?t(outs[0]):"—"}</td><td>${esc(String(xs[0].distance_m||""))} m</td></tr>`;}).join("")
          ||`<tr><td colspan="4" style="color:var(--muted)">No punches today.</td></tr>`}</tbody></table>`;
+       const ad=$("att-dl");
+       if(ad)ad.addEventListener("click",()=>{
+         dlCsv("ECO-Attendance.csv",[["Name","Date","Time","In / Out","Distance (m)","GPS accuracy (m)"],
+           ...(attlog||[]).slice().reverse().map(x=>{const d=new Date(x.at);
+             return [(personOf(x.person_id)||{}).name||x.person_id,d.toISOString().slice(0,10),d.toTimeString().slice(0,5),x.kind,x.distance_m,x.accuracy_m];})]);
+       });
      }}}
   const depts=[...new Set(act.map(p=>p.dept||"Other"))].sort((a,b)=>a==="Management"?-1:b==="Management"?1:a.localeCompare(b));
   $("staff-list").innerHTML=depts.map(d=>{
     const rows=act.filter(p=>(p.dept||"Other")===d);
-    return `<h4 class="depthead">${esc(d)}</h4><table><thead><tr><th>Name</th><th>Title</th><th>Email</th><th>Ext.</th><th>Mobile</th><th>Reports to</th></tr></thead><tbody>${
-      rows.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.title||"")}</td><td>${esc(p.email)}</td><td>${esc(p.extension||"")}</td><td>${esc(p.mobile||"")}</td><td>${esc((personOf(p.manager_id)||{}).name||"—")}</td></tr>`).join("")}</tbody></table>`;
+    return `<h4 class="depthead">${esc(d)}</h4><table><thead><tr><th>Name</th><th>Email</th><th>Ext.</th><th>Mobile</th></tr></thead><tbody>${
+      rows.map(p=>`<tr><td>${esc(p.name)}</td><td>${esc(p.email)}</td><td>${esc(p.extension||"")}</td><td>${esc(p.mobile||"")}</td></tr>`).join("")}</tbody></table>`;
   }).join("");
   const oc=$("orgchart");if(oc)oc.closest(".panel").hidden=true;
 }
