@@ -311,7 +311,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
     <a class="extdb" href="https://ecoconsjo.sharepoint.com/sites/ECOConsultTeam/Database/Forms/AllItems.aspx?id=%2Fsites%2FECOConsultTeam%2FDatabase%2FProposals%20Database%20and%20Forms&viewid=6a8ffebd%2D5397%2D4a54%2Dae43%2D50c690a9f01d" target="_blank" rel="noopener">Proposals <span class="ext">↗</span></a>
     <button data-view="contacts">Contacts</button>
     <button data-view="cvs">CVs</button>
-    <button data-view="register">Register</button>
+    <button data-view="register">Third party register</button>
     <span class="dbcap">Library</span>
     <button data-view="policies">Policies &amp; procedures</button>
     <button data-view="library">Official papers &amp; certificates</button>
@@ -399,6 +399,16 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
   </section>
 
   <section id="view-register" hidden>
+    <div class="panel" id="rg-addpanel" hidden><h3>Add to the register (Tala / F&amp;O)</h3>
+      <div class="fields">
+        <label class="f">Third party (exact legal name)<input id="rga-name"></label>
+        <label class="f">Type<select id="rga-type"><option>Company</option><option>Individual consultant</option><option>Subcontractor</option><option>Supplier</option></select></label>
+        <label class="f">Status<select id="rga-status"><option>approved</option><option>conditions</option><option>pending</option></select></label>
+        <label class="f">Approved on<input id="rga-app" type="date"></label>
+        <label class="f">Valid until<input id="rga-exp" type="date"></label>
+        <label class="f full">Notes<input id="rga-notes"></label>
+      </div>
+      <div class="formfoot"><button class="btn primary" id="rga-add">Add to register</button><span class="err" id="rga-err" hidden></span><span class="okmsg" id="rga-ok" hidden>Added.</span></div></div>
     <div class="panel"><h3>Third-party register</h3>
       <p class="meta">Subcontractors and consultants who completed the due-diligence application. Approved entries stay on the register for 12 months; contracts and payments are only possible with a valid entry.</p>
       <div class="filters"><select id="rg-f"><option value="">All types</option></select>
@@ -554,11 +564,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-
       </div>
       <div class="tbl" id="lib-list"></div>
     </div>
-    <div class="panel" id="lib-admin" hidden><h3>Add a certificate</h3>
+    <div class="panel" id="lib-admin" hidden><h3>Add a certificate (Karmel / Nelly)</h3>
       <div class="actions" style="margin-top:0">
         <input id="lib-name" placeholder="Document name (e.g. ISO 9001 certificate)" style="flex:2 1 200px">
         <select id="lib-cat" style="width:auto"><option>Company registration</option><option>ISO certificates</option><option>Tax &amp; social security</option><option>Classification &amp; memberships</option><option>Company profile &amp; brochures</option><option>Insurance</option><option>Other</option></select>
-        <input id="lib-exp" type="date" title="Expiry date (optional)" style="width:auto">
+        <label class="f" style="flex:0 1 auto;font-size:11.5px">Expiry date<input id="lib-exp" type="date" style="width:auto"></label>
         <input id="lib-url" placeholder="SharePoint link (or choose a file instead)" style="flex:2 1 220px">
         <input id="lib-file" type="file" style="flex:1 1 170px;width:auto;border:none">
         <button type="button" class="btn small" id="lib-add">Add certificate</button>
@@ -720,7 +730,7 @@ const FORMS={
     items:{label:"Key milestones — deliverable required, amount / days and deadline",
       cols:[["milestone","Milestone"],["deliverable","Deliverable required"],["amount","Amount"],["days","Days (time-based)"],["deadline","Deadline"]]}},
   invoicerequest:{prefix:"Client_Inv",title:"Client invoice request",direct:1,
-    route:"Direct to <b>Finance &amp; Operations</b>: invoice prepared within 1 working day, PM reviews, then submission (F&amp;O handles portal uploads).",
+    route:"Direct to <b>Maysoon / Tala (Finance &amp; Operations)</b>: invoice prepared within 1 working day, PM reviews, then submission (F&amp;O handles portal uploads).",
     hint:"Submit only once the invoicing condition is met. F&amp;O tracks payment with monthly follow-up.",
     fields:[{k:"projectCode",l:"Project (ongoing)",t:"projectsel",only:"ongoing",req:1},
       {k:"contractFile",l:"Attach the contract",t:"file",req:1,full:1},
@@ -731,7 +741,7 @@ const FORMS={
       {k:"portalUpload",l:"Client portal submission required?",t:"select",opts:["No","Yes — F&O uploads (Masdar / ACWA / other)"]},
       {k:"notes",l:"Notes",t:"textarea",full:1}]},
   payment:{prefix:"Payment",title:"Payment request — subcontractor / supplier invoice",
-    route:"Line manager (PM verification) → <b>Finance &amp; Operations</b>: commercial verification, cash-flow check, then payment per the Delegation of Authority with withholding per Jordanian law.",
+    route:"Line manager (PM verification) → <b>Maysoon / Tala (Finance &amp; Operations)</b>: commercial verification, cash-flow check, then payment per the Delegation of Authority with withholding per Jordanian law.",
     hint:"Submitting confirms the deliverables are complete, the invoice matches the contract / milestone, and the supporting documents are attached.",
     fields:[{k:"purpose",l:"Purpose — charged to",t:"select",opts:["Project","Cost centre"],req:1},
       {k:"projectCode",l:"Project",t:"projectsel",req:1,showIf:{k:"purpose",v:["Project"]}},
@@ -758,7 +768,7 @@ const FORMS={
   transport:{prefix:"TRN",title:"Transportation request",
     route:"Line manager → <b>admin / operations</b>. Vehicle, driver or transport arrangements within Jordan — field visits, site trips, errands and staff movements.",
     hint:"Within Jordan only (city or governorates). Paste the Google Maps link of the destination so the driver finds it exactly.",
-    fields:[{k:"department",l:"Department",t:"select",opts:["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Institutional Sustainability","Finance & Operations","Management","Company (general)"],req:1},
+    fields:[{k:"department",l:"Department",t:"select",opts:["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Finance & Operations","Management","Company (general)"],req:1},
       {k:"purpose",l:"Purpose of the trip",req:1},
       {k:"charge",l:"Charged to",t:"select",opts:["Project","Cost centre"],req:1},
       {k:"projectCode",l:"Project",t:"projectsel",req:1,showIf:{k:"charge",v:["Project"]}},
@@ -781,15 +791,15 @@ const FORMS={
     hint:"Choose the request type first, then the location. Only the sections that apply will appear."},
   evt_org:{prefix:"EVT",custom:"evt",base:"evt",direct:1,preset:"ARRANGEMENT — Organize an Event",
     title:"Organize an Event",
-    route:"Direct to <b>admin / operations</b>; the <b>F&amp;O Director</b> approves before booking. Workshops, trainings, conferences, seminars and field days ECO runs — venue, catering, equipment, transport, invitations and certificates in one request.",
+    route:"Direct to the <b>operations coordinators — Nelly / Karmel</b>; the <b>F&amp;O Director</b> approves before booking. Workshops, trainings, conferences, seminars and field days ECO runs — venue, catering, equipment, transport, invitations and certificates in one request.",
     hint:"Pick the location first — only the sections that apply will appear."},
   evt_att:{prefix:"EVT",custom:"evt",base:"evt",direct:1,preset:"PARTICIPATION — Attend an Event",
     title:"Attend an Event",
-    route:"Direct to <b>admin / operations</b>; the <b>F&amp;O Director</b> approves before booking. One or more ECO staff attending an external event — registration, travel, accommodation and per-diems; tick everyone attending in one request.",
+    route:"Direct to the <b>operations coordinators — Nelly / Karmel</b>; the <b>F&amp;O Director</b> approves before booking. One or more ECO staff attending an external event — registration, travel, accommodation and per-diems; tick everyone attending in one request.",
     hint:"Tick everyone attending in one request. Abroad may include airfare."},
   evt_del:{prefix:"EVT",custom:"evt",base:"evt",direct:1,preset:"DELIVERY_PICKUP — Deliver / Collect Items",
     title:"Deliver / Pick up",
-    route:"Direct to <b>admin / operations</b>; the <b>F&amp;O Director</b> approves before booking. Delivery or collection of documents, equipment or materials — in Amman, the governorates, or abroad.",
+    route:"Direct to the <b>operations coordinators — Nelly / Karmel</b>; the <b>F&amp;O Director</b> approves before booking. Delivery or collection of documents, equipment or materials — in Amman, the governorates, or abroad.",
     hint:"Add the destination and what is being moved; attach any handover or invitation letters."},
   procurement:{prefix:"PR",title:"Procurement request",custom:"proc",
     route:"Line manager → <b>procurement</b>. The method follows the Procurement Procedure thresholds: up to 350 JOD micro purchase, over 350 to 50,000 competitive (3 offers), over 50,000 tender (public announcement & Tender Committee).",
@@ -798,7 +808,7 @@ const FORMS={
     route:"Direct to <b>Finance & Operations</b>: the project is verified, registered with its ECO code, and folders & trackers are opened.",
     fields:[{k:"projectName",l:"Project name",req:1},{k:"client",l:"Contracting entity (client)",req:1},
       {k:"donor",l:"Donor / financing institution"},
-      {k:"department",l:"Department",t:"select",opts:["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Institutional Sustainability","Management"]},
+      {k:"department",l:"Department",t:"select",opts:["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Management"]},
       {k:"pm",l:"Project manager",req:1},
       {k:"ecoResources",l:"ECO resources — tick the team from the department",t:"staffchk",full:1},
       {k:"value",l:"Contract value",t:"number",req:1},{k:"currency",l:"Currency",t:"select",opts:CURRENCIES},
@@ -809,17 +819,17 @@ const FORMS={
       {k:"wht",l:"Withholding tax (WHT)",t:"select",opts:["Subject to WHT","Zero WHT"]},
       {k:"brief",l:"Brief / scope",t:"textarea",full:1}]},
   stationery:{prefix:"ST",title:"Stationery request",direct:1,
-    route:"Direct to <b>Administration</b> — collected into the next stationery order.",
+    route:"Direct to <b>Administration — Maryam / Anne / Karmel</b> — collected into the next stationery order.",
     fields:[{k:"neededBy",l:"Needed by",t:"date"},
       {k:"urgency",l:"Urgency",t:"select",opts:["Normal","Urgent"]}],
     items:{label:"Items",cols:[["item","Item"],["qty","Qty"],["note","Notes"]]}},
   kitchen:{prefix:"KS",title:"Kitchen & office supplies",direct:1,
-    route:"Direct to <b>Administration</b> — coffee, tea, water, cleaning and the rest of the office basics.",
+    route:"Direct to <b>Administration — Maryam / Anne / Karmel</b> — coffee, tea, water, cleaning and the rest of the office basics.",
     fields:[{k:"neededBy",l:"Needed by",t:"date"},
       {k:"urgency",l:"Urgency",t:"select",opts:["Normal","Urgent — run out"]}],
     items:{label:"Items",cols:[["item","Item"],["qty","Qty"],["note","Notes"]]}},
   meetingroom:{prefix:"MR",title:"Internal meeting booking",direct:1,
-    route:"Direct to <b>Administration</b> — the room is confirmed and any refreshments arranged.",
+    route:"Direct to <b>Administration — Maryam / Anne / Karmel</b> — the room is confirmed and any refreshments arranged.",
     fields:[{k:"room",l:"Room",t:"select",opts:["3rd floor — main meeting room","3rd floor — meeting room by the balcony","Ground floor — meeting room in the office","Ground floor — separate meeting room","B1 meeting room"],req:1},
       {k:"meetDate",l:"Date",t:"date",req:1},
       {k:"startTime",l:"From",t:"time",req:1},{k:"endTime",l:"To",t:"time",req:1},
@@ -828,19 +838,19 @@ const FORMS={
       {k:"refreshments",l:"Refreshments",t:"select",opts:["None","Water only","Water & coffee/tea","Coffee break"]},
       {k:"purpose",l:"Meeting subject",full:1}]},
   itissue:{prefix:"IT",title:"IT & laptop issue",direct:1,
-    route:"Direct to <b>IT</b> — logged, tracked and closed in the portal.",
+    route:"Direct to <b>Karmel (IT)</b> — logged, tracked and closed in the portal.",
     fields:[{k:"itCategory",l:"Category",t:"select",opts:["Laptop / desktop","Email & accounts","Internet / network","Printer / scanner","Software & licenses","Phone / extension","Other"]},
       {k:"urgency",l:"Urgency",t:"select",opts:["Normal","Urgent — cannot work"]},
       {k:"assetTag",l:"Device / asset (if any)"},
       {k:"description",l:"What happened?",t:"textarea",req:1,full:1}]},
   maintenance:{prefix:"MNT",title:"Office maintenance",direct:1,
-    route:"Direct to <b>Administration</b> — the fix is arranged with the building or the technician.",
+    route:"Direct to <b>Administration — Maryam / Anne / Karmel</b> — the fix is arranged with the building or the technician.",
     fields:[{k:"area",l:"Where",t:"select",opts:["Offices","Meeting room","Kitchen","Bathrooms","Reception","Corridors / stairs","Outside / parking"]},
       {k:"mtype",l:"Type",t:"select",opts:["Air conditioning","Electrical","Plumbing","Furniture","Doors / locks","Painting / walls","Other"]},
       {k:"urgency",l:"Urgency",t:"select",opts:["Normal","Urgent — safety or blocking work"]},
       {k:"description",l:"Describe the problem",t:"textarea",req:1,full:1}]},
   internapp:{prefix:"INT",title:"Internship application",direct:1,
-    route:"Direct to <b>HR</b> — reviewed against the internship programme eligibility and department capacity; accepted interns are added to the register.",
+    route:"Direct to <b>HR — Anne Haddad</b> — reviewed against the internship programme eligibility and department capacity; accepted interns are added to the register.",
     hint:"Tracks: Explorer (high school, up to 4 weeks), Professional (university, up to 6 weeks), Associate (graduate, up to 3 months). High-school applicants need a parent / guardian consent form before starting.",
     fields:[{k:"applicantName",l:"Applicant name",req:1},{k:"dob",l:"Date of birth",t:"date"},
       {k:"track",l:"Track",t:"select",opts:["Explorer (High School)","Professional (University)","Associate (Graduate)"]},
@@ -871,7 +881,7 @@ const FORMS={
       {k:"attachment",l:"Supporting document if needed (e.g. medical report)",t:"file",full:1},
       {k:"notes",l:"Notes",t:"textarea",full:1}]},
   empcert:{prefix:"EMP",title:"Employment certificate",direct:1,
-    route:"Direct to <b>HR</b> — prepared on letterhead, approved by the Director, signed and stamped.",
+    route:"Direct to <b>HR — Anne Haddad</b> — prepared on letterhead, approved by the Director, signed and stamped.",
     fields:[{k:"addressedTo",l:"Addressed to",t:"select",opts:["To whom it may concern","Embassy / consulate","Bank","Government entity","Other"]},
       {k:"addressedDetail",l:"Entity name (as it should appear)"},
       {k:"language",l:"Language",t:"select",opts:["English","Arabic","Both"]},
@@ -880,7 +890,7 @@ const FORMS={
       {k:"neededBy",l:"Needed by",t:"date"},
       {k:"notes",l:"Notes",t:"textarea",full:1}]},
   bizcards:{prefix:"BC",title:"Business cards & stamps",direct:1,
-    route:"Direct to <b>Administration</b> — prepared with the approved ECO design.",
+    route:"Direct to <b>Administration — Maryam / Anne / Karmel</b> — prepared with the approved ECO design.",
     fields:[{k:"bcType",l:"Request",t:"select",opts:["Business cards","Company stamp","Letterhead / envelopes"]},
       {k:"forWhom",l:"For (name as it should appear)",req:1},
       {k:"titleOnCard",l:"Title on card"},
@@ -900,7 +910,7 @@ const FORMS={
       {k:"impact",l:"Impact on the project — schedule, budget, deliverables, relationship",t:"textarea",full:1},
       {k:"suggestion",l:"Suggested action",t:"textarea",full:1}]},
   closeout:{prefix:"CLOSE",title:"Project completion — reference certificate & client survey",direct:1,
-    route:"Direct to <b>Finance &amp; Operations</b> (Maysoon / Tala) — no approvals needed. They request the completion / reference certificate from the client and send the satisfaction survey, and both are filed against the project.",
+    route:"Direct to <b>Salma Faddah</b> — no approvals needed. She requests the completion / reference certificate from the client and sends the satisfaction survey, and both are filed against the project.",
     fields:[{k:"project",l:"Project",t:"projectsel",req:1},
       {k:"want",l:"What to request",t:"select",opts:["Both — reference certificate & client survey","Reference / completion certificate only","Client satisfaction survey only"]},
       {k:"clientOrg",l:"Client organization",req:1},
@@ -940,7 +950,7 @@ const GROUPS=[
   ["Internships",["internapp"]],
 ];
 const STATUS={pending_manager:"Awaiting approval",submitted:"Submitted",in_review:"In review",approved:"Approved",completed:"Completed",rejected:"Rejected"};
-const DIRECTORS={"E&S Advisory and Assessments":"ibrahim.masri","Economic Growth & Climate":"khaleel.najjar","ESG & Corporate Sustainability":"jude.dahdal","Institutional Sustainability":"jude.dahdal","Finance & Operations":"lana.daoud","Management":"lana.daoud"};
+const DIRECTORS={"E&S Advisory and Assessments":"ibrahim.masri","Economic Growth & Climate":"sally.kafaween","ESG & Corporate Sustainability":"jude.dahdal","Finance & Operations":"lana.daoud","Management":"lana.daoud"};
 const FO_MANAGER="maysoon.salem", FO_DIRECTOR="lana.daoud";
 const roleOf=(k,fb)=>{const x=approles.find(a=>a.role_key===k);return (x&&x.person_id)||fb||null;};
 const foManager=()=>roleOf("fo_manager",FO_MANAGER), foDirector=()=>roleOf("fo_director",FO_DIRECTOR);
@@ -949,16 +959,16 @@ const PRE_CHAINS={procurement:1};
 const EXEC_CHAINS=t=>({evt:[foDirector()],invoicerequest:[foManager(),foDirector()],payment:[foManager(),foDirector()],empcert:[foDirector()],internapp:[foDirector()]})[t]||null;
 const curApprover=r=>r.status==="pending_manager"?((r.chain&&r.chain.ids)?r.chain.ids[r.chain.idx||0]:r.manager_id):null;
 const CYCLES={
-  evt:[["You submit the request — straight to admin / operations","submitted"],["Admin / operations review the request and prepare the plan & costs","in_review"],["Finance & Ops director approves","pending_manager"],["Admin / operations proceed with the booking — venue, catering, transport, per diem, letters","approved"],["Event done, costs settled and filed","completed"]],
+  evt:[["You submit the request — straight to the operations coordinators (Nelly / Karmel)","submitted"],["The operations coordinator reviews and prepares the plan & costs","in_review"],["Finance & Ops director approves","pending_manager"],["The operations coordinator proceeds with the booking — venue, catering, transport, per diem, letters","approved"],["Event done, costs settled and filed","completed"]],
   procurement:[["You submit the request — the method is set automatically from the amount","pending_manager"],["Your line manager approves","pending_manager"],["Department director approves","pending_manager"],["Finance & Ops director approves","submitted"],["Procurement obtain the offers: micro (no quotes), competitive (3 offers) or tender (public announcement)","in_review"],["Award — PO or agreement; due diligence above 350 JOD","approved"],["Delivered, invoice paid, closed","completed"]],
   duediligence:[["You nominate the third party","pending_manager"],["Your line manager approves","pending_manager"],["Operations run the due-diligence checks","in_review"],["Management approve — the third party joins the register for 12 months","approved"],["Register updated; contracts and payments unlocked","completed"]],
   agreement:[["You submit — straight to the Finance & Admin Director","submitted"],["Template prepared and reviewed; no standard clauses amended","in_review"],["Signed; countersigned copy back within 7 days — no work before execution","approved"],["Filed — work may start","completed"]],
-  invoicerequest:[["You submit once the milestone is completed and accepted","submitted"],["Finance & Ops prepare the invoice — within 1 working day","in_review"],["F&O Manager approves","pending_manager"],["F&O Director approves","pending_manager"],["Invoice issued / uploaded to the client portal","approved"],["Payment received and recorded; monthly follow-up until then","completed"]],
-  payment:[["You submit with the invoice details","pending_manager"],["Your line manager (PM) verifies the deliverables","submitted"],["Finance & Ops verify the invoice, contract and register — within 1 working day","in_review"],["F&O Manager approves","pending_manager"],["F&O Director approves","pending_manager"],["Paid per the Delegation of Authority, withholding per Jordanian law","approved"],["Recorded and filed","completed"]],
+  invoicerequest:[["You submit once the milestone is completed and accepted","submitted"],["Maysoon / Tala prepare the invoice — within 1 working day","in_review"],["F&O Manager approves","pending_manager"],["F&O Director approves","pending_manager"],["Invoice issued / uploaded to the client portal","approved"],["Payment received and recorded; monthly follow-up until then","completed"]],
+  payment:[["You submit with the invoice details","pending_manager"],["Your line manager (PM) verifies the deliverables","submitted"],["Maysoon / Tala verify the invoice, contract and register — within 1 working day","in_review"],["F&O Manager approves","pending_manager"],["F&O Director approves","pending_manager"],["Paid per the Delegation of Authority, withholding per Jordanian law","approved"],["Recorded and filed","completed"]],
   riskreport:[["You submit — straight to the management representative","submitted"],["Reviewed by the Management Representative with the Department Director and the Finance & Ops Director","in_review"],["Action agreed","approved"],["Closed","completed"]],
   transport:[["You submit the request","pending_manager"],["Your line manager approves","pending_manager"],["Admin / operations arrange the vehicle, driver or rental","in_review"],["Transport confirmed to you and the driver","approved"],["Trip done, costs settled and filed","completed"]],
   newproject:[["You submit the opening form with the contract details","submitted"],["Finance & Operations verify the contract and open folders & trackers","in_review"],["Project registered with its ECO code — appears in the Projects database","approved"],["Opening complete; execution begins","completed"]],
-  closeout:[["You send the request at project completion — no approvals needed","submitted"],["Finance & Operations (Maysoon / Tala) request the certificate and send the survey to the client","in_review"],["Certificate received & survey response recorded","approved"],["Both filed against the project","completed"]],
+  closeout:[["You send the request at project completion — no approvals needed","submitted"],["Salma Faddah requests the certificate and sends the survey to the client","in_review"],["Certificate received & survey response recorded","approved"],["Both filed against the project","completed"]],
   stationery:[["You list what you need","submitted"],["Administration adds it to the next order","in_review"],["Delivered to your desk","completed"]],
   kitchen:[["You list what's needed or running out","submitted"],["Administration purchases with the regular supplies run","in_review"],["Stocked","completed"]],
   meetingroom:[["You book the room and time","submitted"],["Administration confirms the room & refreshments","approved"],["Meeting held","completed"]],
@@ -967,7 +977,7 @@ const CYCLES={
   raiseconcern:[["You raise the concern — visible to HR only","submitted"],["HR reviews and follows up with you directly","in_review"],["Resolved and closed","completed"]],
   internapp:[["Application submitted to HR","submitted"],["HR screens eligibility & department capacity","in_review"],["Director approval (Lana Daoud)","pending_manager"],["Accepted — offer letter, NDA & onboarding","approved"],["Internship completed — certificate issued","completed"]],
   punchfix:[["You report the missed punch","pending_manager"],["Your supervisor approves","pending_manager"],["The attendance log is corrected automatically","completed"]],
-  leave:[["You submit the leave / vacation request","pending_manager"],["Your line manager approves","pending_manager"],["HR record it against your leave balance","in_review"],["Recorded — you and your manager can see it in the request history","completed"]],
+  leave:[["You submit the leave / vacation request","pending_manager"],["Your line manager approves","pending_manager"],["HR (Anne Haddad) record it against your leave balance","in_review"],["Recorded — you and your manager can see it in the request history","completed"]],
   empcert:[["You request the certificate","submitted"],["HR prepare it on letterhead","in_review"],["Director approval (Lana Daoud)","pending_manager"],["Signed, stamped and handed to you","completed"]],
   bizcards:[["You send the request","submitted"],["Administration prepares with the approved design & printer","in_review"],["Delivered","completed"]],
   refletter:[["You request the letter at project completion","submitted"],["Administration request it from the client","in_review"],["Letter received","approved"],["Filed for future tenders","completed"]],
@@ -1563,7 +1573,7 @@ function initEvt(){
   $("custombody").innerHTML=
     sect("req","Request",
       Lsel("e_type","Request type",["ARRANGEMENT — Organize an Event","PARTICIPATION — Attend an Event","DELIVERY_PICKUP — Deliver / Collect Items"],1)+
-      Lsel("e_dept","Department",["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Institutional Sustainability","Finance & Operations","Management","Company — general activity"],1)+
+      Lsel("e_dept","Department",["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Finance & Operations","Management","Company — general activity"],1)+
       Lsel("e_scope","Location category",["CITY — In city (Amman)","GOVERNORATE — Outside city, within Jordan","ABROAD — Abroad"],1)+
       Lsel("e_charge","Charge to",["Project","Cost centre"],1)+
       L("e_project","Project *",`<select id="e_project"><option value=""></option>${projOptions().map(p=>`<option>${esc(p)}</option>`).join("")}</select>`)+
@@ -2181,7 +2191,7 @@ function detailHtml(r){
   return `<dl class="kv">${kv}</dl>${items}${dd}${extraDetail(r)}<ul class="hist">${hist}</ul>`;
 }
 function actionBtns(r,mode){
-  if(mode==="ops"&&!isOps())return "";
+  if(mode==="ops"&&!isOps()&&handlers[r.type]!==me.id)return "";
   const b=(act,label,cls="")=>`<button type="button" class="btn small ${cls}" data-act="${act}" data-id="${r.id}">${label}</button>`;
   let btns="";
   if(mode==="manager"&&r.status==="pending_manager")btns=b("mgr_approve","Approve & forward","primary")+b("rejected","Reject","danger");
@@ -2493,6 +2503,20 @@ document.addEventListener("change",async e=>{
     await supa.from("project_loe").update({months:mo}).eq("id",id);await loadAll();return;}
   const pdp=e.target.closest("[data-pdept]");
   if(pdp){await supa.from("projects").update({department:pdp.value||null}).eq("id",pdp.dataset.pdept);await loadAll();return;}
+  const pes=e.target.closest("[data-pesave]");
+  if(pes){
+    const err=$("peerr");if(err)err.hidden=true;
+    const {error}=await supa.from("projects").update({
+      name:$("pe-name").value.trim()||undefined,client:$("pe-client").value.trim()||null,
+      pm_id:$("pe-pm").value||null,status:$("pe-status").value,
+      start_date:$("pe-start").value||null,end_date:$("pe-end").value||null,
+      value:$("pe-value").value||null,currency:$("pe-cur").value,
+      export_local:$("pe-exp").value||null,tax_status:$("pe-tax").value||null,
+      wht:$("pe-wht").value||null,department:$("pe-dept").value||null
+    }).eq("id",pes.dataset.pesave);
+    if(error){if(err){err.textContent=error.message;err.hidden=false;}return;}
+    const ok=$("peok");if(ok){ok.hidden=false;setTimeout(()=>ok.hidden=true,1800);}
+    await loadAll();return;}
   const pst=e.target.closest("[data-pstat]");
   if(pst){await supa.from("projects").update({status:pst.value}).eq("id",pst.dataset.pstat);await loadAll();return;}
   const ist=e.target.closest("[data-instat]");
@@ -2612,7 +2636,7 @@ function renderDbForms(){
   if(addPanel)addPanel.hidden=!canAdd;
   if(!canAdd){return;}
   $("proj-form").innerHTML=inp("pj-code","Project code (empty = next in line, e.g. 26-48)")+inp("pj-name","Project name *")+inp("pj-client","Client")
-    +selp("pj-dept","Department",[["E&S Advisory and Assessments","E&S Advisory and Assessments"],["Economic Growth & Climate","Economic Growth & Climate"],["ESG & Corporate Sustainability","ESG & Corporate Sustainability"],["Institutional Sustainability","Institutional Sustainability"],["Management","Management"]])
+    +selp("pj-dept","Department",[["E&S Advisory and Assessments","E&S Advisory and Assessments"],["Economic Growth & Climate","Economic Growth & Climate"],["ESG & Corporate Sustainability","ESG & Corporate Sustainability"],["Management","Management"]])
     +selp("pj-pm","Project manager",pplOpts())+inp("pj-start","Start date","date")+inp("pj-end","End date","date")
     +inp("pj-value","Value","number")+selp("pj-cur","Currency",[["USD","USD"],["JOD","JOD"],["EUR","EUR"],["AED","AED"]])
     +selp("pj-status","Status",[["ongoing","Ongoing"],["on_hold","On hold"],["completed","Completed"]])
@@ -2679,6 +2703,20 @@ $("cv-add").addEventListener("click",async()=>{
 $("ct-q").addEventListener("input",renderContacts);
 ["rg-f","rg-s"].forEach(i=>$(i).addEventListener("change",renderRegister));
 $("rg-q").addEventListener("input",renderRegister);
+$("rga-add").addEventListener("click",async()=>{
+  const err=$("rga-err");err.hidden=true;$("rga-ok").hidden=true;
+  const nm=$("rga-name").value.trim();
+  if(!nm){err.textContent="Enter the third party's legal name.";err.hidden=false;return;}
+  const slug=regSlug(nm);
+  if(register.find(x=>x.id===slug)){err.textContent="Already on the register — edit it in Settings.";err.hidden=false;return;}
+  const {error}=await supa.from("register").insert({id:slug,name:nm,type:$("rga-type").value,
+    status:$("rga-status").value,approved_on:$("rga-app").value||null,expires_on:$("rga-exp").value||null,
+    notes:$("rga-notes").value.trim()||null});
+  if(error){err.textContent=error.message;err.hidden=false;return;}
+  ["rga-name","rga-notes"].forEach(i=>$(i).value="");
+  $("rga-ok").hidden=false;setTimeout(()=>$("rga-ok").hidden=true,2000);
+  await loadAll();
+});
 $("rg-dl").addEventListener("click",()=>{
   dlCsv("ECO-Third-Party-Register.csv",[["Name","Type","Status","Approved on","Valid until","Notes"],
     ...(register||[]).map(x=>[x.name,x.type,x.status,x.approved_on,x.expires_on,x.notes])]);
@@ -2895,6 +2933,22 @@ function renderProjPage(){
       ${p.tax_status?`<span>Sales tax: <b>${esc(p.tax_status)}</b></span>`:""}
       ${p.wht?`<span>WHT: <b>${esc(p.wht)}</b></span>`:""}</div>
     ${p.description?`<p class="meta" style="margin:8px 0 0">${esc(p.description)}</p>`:""}</div>
+  ${isOps()?`<div class="panel"><h3>Edit project / tracker details (F&amp;O — Maysoon / Tala)</h3>
+    <div class="fields">
+      <label class="f">Project name<input id="pe-name" value="${esc(p.name||"")}"></label>
+      <label class="f">Client<input id="pe-client" value="${esc(p.client||"")}"></label>
+      <label class="f">Project manager<select id="pe-pm"><option value="">— none —</option>${people.map(x=>`<option value="${x.id}" ${p.pm_id===x.id?"selected":""}>${esc(x.name)}</option>`).join("")}</select></label>
+      <label class="f">Status<select id="pe-status">${[["ongoing","Ongoing — active"],["on_hold","On hold — inactive"],["completed","Completed"],["cancelled","Cancelled"]].map(([v,l])=>`<option value="${v}" ${p.status===v?"selected":""}>${l}</option>`).join("")}</select></label>
+      <label class="f">Start date<input id="pe-start" type="date" value="${esc(p.start_date||"")}"></label>
+      <label class="f">End date<input id="pe-end" type="date" value="${esc(p.end_date||"")}"></label>
+      <label class="f">Contract value<input id="pe-value" type="number" value="${esc(p.value==null?"":p.value)}"></label>
+      <label class="f">Currency<select id="pe-cur">${CURRENCIES.map(c=>`<option ${((p.currency||"USD")===c)?"selected":""}>${c}</option>`).join("")}</select></label>
+      <label class="f">Export / Local<select id="pe-exp"><option value=""></option>${["Local","Export","Local - Taxable"].map(o=>`<option ${p.export_local===o?"selected":""}>${o}</option>`).join("")}</select></label>
+      <label class="f">Sales tax<select id="pe-tax"><option value=""></option>${["Exempted","Exempt","0%","16%","Export","Taxable"].map(o=>`<option ${p.tax_status===o?"selected":""}>${o}</option>`).join("")}</select></label>
+      <label class="f">WHT<select id="pe-wht"><option value=""></option>${["Subject to WHT","Zero WHT"].map(o=>`<option ${p.wht===o?"selected":""}>${o}</option>`).join("")}</select></label>
+      <label class="f">Department<select id="pe-dept"><option value=""></option>${["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Management"].map(d=>`<option ${p.department===d?"selected":""}>${d}</option>`).join("")}</select></label>
+    </div>
+    <div class="formfoot"><button type="button" class="btn primary small" data-pesave="${p.id}">Save project details</button><span class="okmsg" id="peok" hidden>Saved.</span><span class="err" id="peerr" hidden></span></div></div>`:""}
   ${posHtml(p)}
   ${finSection(p,["Client"],"Client invoicing — main contract","Client")}
   ${finSection(p,["Subcontractor","Consultant"],"Subcontractors &amp; consultants","Sub")}
@@ -2947,6 +3001,7 @@ function renderCvs(){
 }
 function renderRegister(){
   if(!$("rg-list"))return;
+  const ap=$("rg-addpanel");if(ap)ap.hidden=!(me&&(isOps()||me.id==="tala.zakaria"));
   const tf=$("rg-f"),types=[...new Set((register||[]).map(x=>x.type||"").filter(Boolean))].sort();
   if(tf.options.length-1!==types.length){const cur=tf.value;tf.length=1;types.forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;tf.appendChild(o);});tf.value=cur;}
   const ftype=tf.value,fst=$("rg-s").value,q=($("rg-q").value||"").toLowerCase();
@@ -2968,7 +3023,7 @@ function dlCsv(name,rows2){
 function renderDb(){
   renderDbForms();
   const pf=$("proj-f").value,pq=($("proj-q").value||"").toLowerCase();
-  const DEPTS=["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Institutional Sustainability","Management"];
+  const DEPTS=["E&S Advisory and Assessments","Economic Growth & Climate","ESG & Corporate Sustainability","Management"];
   const fil=projects.filter(p=>(!pf||p.status===pf)&&(!pq||(p.name+" "+(p.client||"")+" "+(p.code||"")+" "+(p.department||"")).toLowerCase().includes(pq)));
   const groups=[...DEPTS.filter(d=>fil.some(p=>p.department===d)).map(d=>[d,fil.filter(p=>p.department===d)]),
     ...(fil.some(p=>!p.department||!DEPTS.includes(p.department))?[["Department not assigned",fil.filter(p=>!p.department||!DEPTS.includes(p.department))]]:[])];
@@ -3163,14 +3218,14 @@ function renderCal(){
 }
 function renderLib(){
   const el=$("lib-list");if(!el)return;
-  $("lib-admin").hidden=!isOps();
-  const warn=d=>{if(!d)return "";const dd=Math.round((new Date(d).getTime()-Date.now())/86400000);
-    return dd<0?`<span class="chip st-rejected">expired</span>`:(dd<60?`<span class="chip st-in_review">expires in ${dd}d</span>`:"");};
-  el.innerHTML=`<table><thead><tr><th>Document</th><th>Category</th><th>Expires</th><th>File</th>${isOps()?"<th></th>":""}</tr></thead><tbody>${
+  $("lib-admin").hidden=!(me&&(me.id==="karmel.dirbashi"||me.id==="nelly.enkababian"||me.id==="lana.daoud"));
+  const warn=d=>{if(!d)return `<span class="chip st-completed">no expiry</span>`;const dd=Math.round((new Date(d).getTime()-Date.now())/86400000);
+    return dd<0?`<span class="chip st-rejected">EXPIRED</span>`:(dd<60?`<span class="chip st-in_review">expires in ${dd}d</span>`:`<span class="chip st-approved">valid</span>`);};
+  el.innerHTML=`<table><thead><tr><th>Document</th><th>Category</th><th>Expiry date</th><th>Status</th><th>File</th>${isOps()?"<th></th>":""}</tr></thead><tbody>${
     libdocs.map(d=>`<tr><td>${esc(d.name)}</td><td>${esc(d.category||"")}</td>
-      <td>${esc(d.expires_on||"—")} ${warn(d.expires_on)}</td>
+      <td>${esc(d.expires_on||"—")}</td><td>${warn(d.expires_on)}</td>
       <td>${d.path?`<button type="button" class="btn small" data-file="${esc(d.path)}">Download</button>`:(d.url?`<a class="btn small" href="${esc(d.url)}" target="_blank" rel="noopener">Open ↗</a>`:"—")}</td>
-      ${isOps()?`<td><button type="button" class="btn small danger" data-libdel="${d.id}">×</button></td>`:""}</tr>`).join("")||`<tr><td colspan="5" style="color:var(--muted)">No documents yet.</td></tr>`}</tbody></table>`;
+      ${isOps()?`<td><button type="button" class="btn small danger" data-libdel="${d.id}">×</button></td>`:""}</tr>`).join("")||`<tr><td colspan="6" style="color:var(--muted)">No documents yet.</td></tr>`}</tbody></table>`;
 }
 ["proj-f","proj-q"].forEach(id=>{
   $(id).addEventListener("input",renderDb);$(id).addEventListener("change",renderDb);
@@ -3246,12 +3301,12 @@ function renderSettings(){
       <td><input id="rg-app-${esc(e.id)}" type="date" value="${esc(e.approved_on||"")}"></td>
       <td><input id="rg-exp-${esc(e.id)}" type="date" value="${esc(e.expires_on||"")}"></td>
       <td><button class="btn small" data-rsave="${esc(e.id)}">Save</button> <button class="btn small danger" data-rdel="${esc(e.id)}">Remove</button></td></tr>`).join("")}</tbody></table>`;
-  $("staffadmin").innerHTML=`<table><thead><tr><th>Name</th><th>Title</th><th>Email</th><th>Ext.</th><th>Mobile</th><th>Manager</th><th>End date</th><th>Deputy (successor)</th><th>Role</th><th>Active</th><th></th></tr></thead><tbody>${
+  $("staffadmin").innerHTML=`<table style="min-width:1250px"><thead><tr><th>Name</th><th>Title</th><th>Email</th><th>Ext.</th><th>Mobile</th><th>Manager</th><th>End date</th><th>Deputy (successor)</th><th>Role</th><th>Active</th><th></th></tr></thead><tbody>${
     people.map(p=>`<tr>
-      <td><input id="sp-name-${esc(p.id)}" value="${esc(p.name)}"></td>
-      <td><input id="sp-title-${esc(p.id)}" value="${esc(p.title||"")}"></td>
-      <td><input id="sp-email-${esc(p.id)}" value="${esc(p.email)}"></td>
-      <td><input id="sp-ext-${esc(p.id)}" value="${esc(p.extension||"")}" style="min-width:60px"></td>
+      <td><input id="sp-name-${esc(p.id)}" value="${esc(p.name)}" style="min-width:150px"></td>
+      <td><input id="sp-title-${esc(p.id)}" value="${esc(p.title||"")}" style="min-width:140px"></td>
+      <td><input id="sp-email-${esc(p.id)}" value="${esc(p.email)}" style="min-width:210px"></td>
+      <td><input id="sp-ext-${esc(p.id)}" value="${esc(p.extension||"")}" style="min-width:80px"></td>
       <td><input id="sp-mob-${esc(p.id)}" value="${esc(p.mobile||"")}" style="min-width:110px"></td>
       <td><select id="sp-mgr-${esc(p.id)}"><option value="">— none —</option>${people.filter(x=>x.id!==p.id).map(x=>`<option value="${x.id}" ${p.manager_id===x.id?"selected":""}>${esc(x.name)}</option>`).join("")}</select></td>
       <td><input id="sp-endd-${esc(p.id)}" type="date" value="${esc(p.end_date||"")}" style="min-width:125px" title="Employment end date — from this date the person disappears from all pickers"></td>
